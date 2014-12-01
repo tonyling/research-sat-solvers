@@ -25,13 +25,12 @@ def format_tests(file_name):
 #sys.stdout = new_stdout
 #sys.stderr = new_stdout
 
-generated_sat_path = "UUF100.430.1000"
-p2 = "UF250.1065.100"
-testing = generated_sat_path
+#testing = generated_sat_path
 
 def run_test(tests):
     #file_null = open(os.devnull, 'w')
     results = ""
+    count = 1
     for root, dirs, files in os.walk(tests):
         for name in files:
             if name.endswith((".cnf")):
@@ -40,7 +39,7 @@ def run_test(tests):
                # sp = subprocess.call(["minisat/core/minisat_static", "{file}".format(file=file_name)])
     #            sp.communicate()
                 avg = 0
-                loop = 100
+                loop = 10
                 unsat = 0
                 sat = 0
 
@@ -87,8 +86,14 @@ sys.stdout = file
                 r = name + " " + str(avg/loop) + " sat:" + str(sat) + " unsat:" + str(unsat) + "\n"
                 #sys.stderr.write(r)
                 print(r)
+                print("Finished test {num}".format(num=count))
                 results += r
+                count += 1
     with open("minisat_results/{tests}".format(tests=tests), "w") as o:
         o.write(results)
 
-run_test(testing)
+#Code starts here
+benchmarks = ["uf20-91", "uf100-430", "UUF100.430.1000", "UF125.538.100","UUF125.538.100"]
+#benchmarks = ["uf20-91", "uf100-430", "UUF100.430.1000", "UF125.538.100","UUF125.538.100", "UF250.1065.100", "UUF250.1065.100"]
+for bm in benchmarks:
+    run_test(bm)

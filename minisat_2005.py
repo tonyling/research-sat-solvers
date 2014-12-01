@@ -19,31 +19,20 @@ def format_tests(file_name):
     with open(file_name, "w") as f:
         f.write(string)
 
-#saved_stderr = sys.stdout
-#saved_stdout = sys.stdout
-#new_stdout = io.StringIO()
-#sys.stdout = new_stdout
-#sys.stderr = new_stdout
-
-generated_sat_path = "UUF100.430.1000"
-p2 = "UF250.1065.100"
-testing = generated_sat_path
 
 def run_test(tests):
-    #file_null = open(os.devnull, 'w')
     results = ""
+    count = 1
     for root, dirs, files in os.walk(tests):
         for name in files:
             if name.endswith((".cnf")):
                 file_name = os.path.abspath(os.path.join(root,name))
-                format_tests(file_name)
-               # sp = subprocess.call(["minisat/core/minisat_static", "{file}".format(file=file_name)])
-    #            sp.communicate()
+                #format_tests(file_name)
                 avg = 0
-                loop = 100
+                loop = 10
                 unsat = 0
                 sat = 0
-
+                # Run solver and store output
                 for i in range(0,loop):
                     setup = '''
 import subprocess
@@ -52,24 +41,14 @@ file = open("minisat_2005_results/{file_name}.tmp.{num}", "w")
 sys.stdout = file
 '''.format(file_name=name,num=i)
        
-                    #time_taken=timeit(stmt = "subprocess.Popen([\"minisat/core/minisat_static\", \"{file_name}\"], stdout=file)".format(
-                    #    file_name=file_name), setup=setup, number=1)
- #                   sys.stderr.write("PING")
                     file = open("minisat_2005_results/{file_name}.tmp.{num}".format(file_name=name, num=i), "w")
                     t0 = time.time()
                     sp = subprocess.Popen(["minisat/core/minisat_static", "{file_name}".format(file_name=file_name)], stdout=file)
                     sp.communicate()
                     t1 = time.time()
                     avg += (t1-t0)
-#                    print(str(t1-t0) + name)
                     file.close()
-#                    sys.stderr.write("PING2")
-#                    avg += time_taken
- #                   r = name + " " + str(avg/loop) + "\n"
-  #                  sys.stderr.write(r)
-                #s_time = os.times()
-                #print(s_time)
-                #print(str(s_time[2]) + " " + str(s_time[3]))
+                # Open stored output to see if solver successfully detected satisfiable and unsatisfiable SAT problem
                 for i in range(0, loop):
                     path = "minisat_2005_results/{file_name}.tmp.{num}".format(file_name=name, num=i)
                     with open(path, "r") as f:
@@ -83,12 +62,17 @@ sys.stdout = file
                                 seen_results = True
                         if seen_results:
                             os.remove(path)
-                        #       sys.stderr.write(line)
                 r = name + " " + str(avg/loop) + " sat:" + str(sat) + " unsat:" + str(unsat) + "\n"
-                #sys.stderr.write(r)
                 print(r)
+                print("Finished test {num}".format(num=count))
                 results += r
+                count += 1
+    # Store output in single file
     with open("minisat_2005_results/{tests}".format(tests=tests), "w") as o:
         o.write(results)
 
-run_test(testing)
+#Code starts here
+benchmarks = ["uf20-91", "uf100-430", "UUF100.430.1000", "UF125.538.100","UUF125.538.100"]
+#benchmarks = ["uf20-91", "uf100-430", "UUF100.430.1000", "UF125.538.100","UUF125.538.100", "UF250.1065.100", "UUF250.1065.100"]
+for bm in benchmarks:
+    run_test(bm)
