@@ -1,0 +1,107 @@
+Walksat - Version 50
+31 March 2012
+Henry Kautz <kautz@cs.rochester.edu>
+
+Compilation
+
+- Edit flags at beginning of walksat.c to change the following
+options:
+
+    Exactly one of the following should be defined to be 1, 
+    the rest defined to be 0:
+	UNIX (Most versions of Unix, including Linux and Mac OS X)
+        NT   (Microsoft Windows)
+        ANSI (Ansi Unix, use only if will not compile under Unix)
+
+    Following may be defined at your option:	
+
+	DYNAMIC - use dynamic arrays; static arrays allow more compiler optimizations
+        MAXATOM - if static arrays used, must set
+        MAXCLAUSE - if static arrays used, must set
+
+- For Windows, create a workspace/project and add the library
+Winmm.lib to the "linker" tab.
+
+Compilation options:
+	make           # compile everything
+	make install   # compile and copy to $USER/bin
+	make clean     # remove .o files
+
+********************************************************************************
+
+Walksat specifications
+
+Walksat attempts to find a satisfying model of a cnf formula.
+Format is .cnf format:
+
+
+c Optional comments at start of file.
+c The "p" line specifies cnf format, number vars, number clauses
+c Variables are numbered starting at 1
+c Each clause ends with 0
+p cnf 3 2
+1 -3 0
+2 3 -1 0
+
+Walksat reads from standard in (or from a file specified as a command
+line argument) and writes to standard out (and standard error).  To
+get a list of command line options, type
+	walksat -help
+(or any other illegal option).
+
+*****************************************************************
+
+Also included in distribution:
+
+makewff [-seed N] [-cnf] [-f] [-kf] clen nvars nclauses
+
+Generate random formulas using the fixed clause length model.
+The -seed argument can be used to initialize the random number
+generator.  The -cnf, -f, and -kf options specify the format of the
+wff file; for walksat use -cnf.  Clen is the length of each clause,
+nvars the number of variables, and nclauses the number of clauses.
+
+makequeens N
+
+Generate a N-queens formula.
+
+*****************************************************************
+
+HISTORY
+
+version 7 - introduced breakcount[] array
+version 11 - if all vars in a clause are tabu, pick another clause
+version 14 - universal sequence
+version 16 - improved print options and help message
+version 17 - added trace N option
+version 18 - added avg # unsat in tail
+version 19 - fixed bug in calc. of avg # unsat in tail
+version 21 - fixed help message
+version 22 - used POSIX times() function
+version 23 - calculate std dev of avgfalse in tail
+version 25 - -hamming option
+version 26 - simplified inner loop
+version 27 - major cleanup, reorganized distribution file
+version 28 - novelty and rnovelty heuristics
+version 30 - added numbad calculations
+version 31 - fix divide by 0 core dump
+version 32 - fix bug in tabu code
+version 33 - print mean flips until assign after each try.
+version 34 - allow numsol to work with solcnf 
+version 35 - fixed printing of columns
+version 36 - adjusted formatting of output
+version 37 - cleaned up
+version 38 - added rnovelty+
+version 39 - fixed, should be novelty+, not rnovelty+.
+version 40 - compiles now under NT, ansi unix, as well as most other Unix's
+version 41 - uses long long ints for cutoff
+version 42 - fixed bug in rnovelty when denominator not 100
+version 43 - finally included CORRECT versions of novelty+ and rnovelty+.
+version 44 - special version for sat competition - not distributed
+version 45 - watched literal added
+version 46 - fixed timing calculations
+version 47 - fixed printing long long ints
+version 48 - allow cnf file name to appear as argument on command line
+version 49 - various minor bugs, watched literals removed
+version 50 - code optimizations suggested by Don Knuth
+version 51 - fix compiler warnings
