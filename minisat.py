@@ -27,7 +27,7 @@ def format_tests(file_name):
 
 #testing = generated_sat_path
 
-def run_test(tests):
+def run_test(tests, loop=10):
     #file_null = open(os.devnull, 'w')
     results = ""
     count = 1
@@ -39,7 +39,7 @@ def run_test(tests):
                # sp = subprocess.call(["minisat/core/minisat_static", "{file}".format(file=file_name)])
     #            sp.communicate()
                 avg = 0
-                loop = 10
+                #loop = 10
                 unsat = 0
                 sat = 0
 
@@ -77,9 +77,11 @@ sys.stdout = file
                             if line.strip() == "UNSATISFIABLE":
                                 unsat += 1
                                 seen_results = True
+                                break
                             elif line.strip() == "SATISFIABLE":
                                 sat += 1
                                 seen_results = True
+                                break
                         if seen_results:
                             os.remove(path)
                         #       sys.stderr.write(line)
@@ -93,7 +95,8 @@ sys.stdout = file
         o.write(results)
 
 #Code starts here
-benchmarks = ["uf20-91", "uf100-430", "UUF100.430.1000", "UF125.538.100","UUF125.538.100"]
+#benchmarks = [["uf20-91", 100]]
+benchmarks = [["uf20-91", 100], ["uf100-430", 100], ["UUF100.430.1000", 100], ["UF125.538.100", 100],["UUF125.538.100", 100]]
 #benchmarks = ["uf20-91", "uf100-430", "UUF100.430.1000", "UF125.538.100","UUF125.538.100", "UF250.1065.100", "UUF250.1065.100"]
 for bm in benchmarks:
-    run_test(bm)
+    run_test(bm[0], bm[1])
