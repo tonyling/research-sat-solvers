@@ -21,43 +21,43 @@ def run_test(tests, loop=10):
                     setup = '''
 import subprocess
 
-file = open("zchaff_results/{file_name}.tmp.{num}", "w")
+file = open("walksat_51_results/{file_name}.tmp.{num}", "w")
 sys.stdout = file
 '''.format(file_name=name,num=i)
        
-                    file = open("zchaff_results/{file_name}.tmp.{num}".format(file_name=name, num=i), "w")
+                    file = open("walksat_51_results/{file_name}.tmp.{num}".format(file_name=name, num=i), "w")
                     t0 = time.time()
-                    sp = subprocess.Popen(["zchaff64/zchaff", "{file_name}".format(file_name=file_name)], stdout=file)
+                    sp = subprocess.Popen(["Walksat_v51/walksat", "{file_name}".format(file_name=file_name)], stdout=file)
                     sp.communicate()
                     t1 = time.time()
                     avg += (t1-t0)
                     file.close()
                 # Open stored output to see if solver successfully detected satisfiable and unsatisfiable SAT problem
                 for i in range(0, loop):
-                    path = "zchaff_results/{file_name}.tmp.{num}".format(file_name=name, num=i)
+                    path = "walksat_51_results/{file_name}.tmp.{num}".format(file_name=name, num=i)
                     with open(path, "r") as f:
                         seen_results = False
                         for line in f:
-                        	try:
-	                        	if line.strip().split()[1] == "UNSAT":
-	                        		unsat += 1
-	                        		seen_results = True
-	                        		break
-	                        	elif line.strip().split()[1] == "SAT":
-	                        		sat += 1
-	                        		seen_results = True
-	                        		break
-	                        except:
-	                        	continue
+                            try:
+                                if line.strip() == "ASSIGNMENT NOT FOUND":
+                                    unsat += 1
+                                    seen_results = True
+                                    break
+                                elif line.strip() == "ASSIGNMENT FOUND":
+                                    sat += 1
+                                    seen_results = True
+                                    break
+                            except:
+                                continue
                         if seen_results:
                             os.remove(path)
                 r = name + " " + str(avg/loop) + " sat:" + str(sat) + " unsat:" + str(unsat) + "\n"
                 # print(r)
-                # print("zchaff finished test {num}".format(num=count))
+                # print("picosat_960 finished test {num}".format(num=count))
                 results += r
                 count += 1
     # Store output in single file
-    with open("zchaff_results/{tests}".format(tests=tests), "w") as o:
+    with open("walksat_51_results/{tests}".format(tests=tests), "w") as o:
         o.write(results)
 
 #Code starts here

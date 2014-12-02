@@ -87,8 +87,8 @@ sys.stdout = file
                         #       sys.stderr.write(line)
                 r = name + " " + str(avg/loop) + " sat:" + str(sat) + " unsat:" + str(unsat) + "\n"
                 #sys.stderr.write(r)
-                print(r)
-                print("Finished test {num}".format(num=count))
+                # print(r)
+                # print("minisat finished test {num}".format(num=count))
                 results += r
                 count += 1
     with open("minisat_results/{tests}".format(tests=tests), "w") as o:
@@ -96,7 +96,7 @@ sys.stdout = file
 
 #Code starts here
 #benchmarks = [["uf20-91", 100]]
-benchmarks = [["uf20-91", 100], ["uf100-430", 100], ["UUF100.430.1000", 100], ["UF125.538.100", 100],["UUF125.538.100", 100]]
+benchmarks = [["uf20-91", 50], ["uf100-430", 50], ["UUF100.430.1000", 50], ["UF125.538.100", 50],["UUF125.538.100", 50]]
 #benchmarks = ["uf20-91", "uf100-430", "UUF100.430.1000", "UF125.538.100","UUF125.538.100", "UF250.1065.100", "UUF250.1065.100"]
 for bm in benchmarks:
     run_test(bm[0], bm[1])
