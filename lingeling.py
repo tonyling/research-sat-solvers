@@ -20,29 +20,29 @@ def run_test(tests, loop=10):
                     setup = '''
 import subprocess
 
-file = open("walksat_51_results/{file_name}.tmp.{num}", "w")
+file = open("lingeling_results/{file_name}.tmp.{num}", "w")
 sys.stdout = file
 '''.format(file_name=name,num=i)
        
-                    file = open("walksat_51_results/{file_name}.tmp.{num}".format(file_name=name, num=i), "w")
+                    file = open("lingeling_results/{file_name}.tmp.{num}".format(file_name=name, num=i), "w")
                     t0 = time.time()
-                    sp = subprocess.Popen(["Walksat_v51/walksat", "{file_name}".format(file_name=file_name)], stdout=file)
+                    sp = subprocess.Popen(["lingeling/binary/lingeling", "{file_name}".format(file_name=file_name)], stdout=file)
                     sp.communicate()
                     t1 = time.time()
                     avg += (t1-t0)
                     file.close()
                 # Open stored output to see if solver successfully detected satisfiable and unsatisfiable SAT problem
                 for i in range(0, loop):
-                    path = "walksat_51_results/{file_name}.tmp.{num}".format(file_name=name, num=i)
+                    path = "lingeling_results/{file_name}.tmp.{num}".format(file_name=name, num=i)
                     with open(path, "r") as f:
                         seen_results = False
                         for line in f:
                             try:
-                                if line.strip() == "ASSIGNMENT NOT FOUND":
+                                if line.strip().split()[1] == "UNSATISFIABLE":
                                     unsat += 1
                                     seen_results = True
                                     break
-                                elif line.strip() == "ASSIGNMENT FOUND":
+                                elif line.strip().split()[1] == "SATISFIABLE":
                                     sat += 1
                                     seen_results = True
                                     break
@@ -54,7 +54,7 @@ sys.stdout = file
                 results += r
                 count += 1
     # Store output in single file
-    with open("walksat_51_results/{tests}".format(tests=tests), "w") as o:
+    with open("lingeling_results/{tests}".format(tests=tests), "w") as o:
         o.write(results)
 
 #Code starts here

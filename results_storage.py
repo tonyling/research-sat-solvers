@@ -1,6 +1,6 @@
 store = {}
 
-results_dir = ["minisat_results", "minisat_2005_results", "zchaff_results", "picosat_960_results", "walksat_51_results"]
+results_dir = ["minisat_results", "minisat_2005_results", "zchaff_results", "picosat_960_results", "walksat_51_results", "glucose_2_results", "glucose_3_results", "lingeling_results"]
 benchmarks = ["uf20-91", "uf100-430", "UUF100.430.1000", "UF125.538.100","UUF125.538.100"]
 #benchmarks = ["uf20-91", "uf100-430", "UUF100.430.1000", "UF125.538.100","UUF125.538.100", "UF250.1065.100", "UUF250.1065.100"]
 
