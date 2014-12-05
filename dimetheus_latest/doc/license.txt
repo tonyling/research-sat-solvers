@@ -1,0 +1,11 @@
+DIMETHEUS SAT SOLVER LICENSE INFORMATION
+
+Each version of Dimetheus runs under a specific license.
+To get the current license under which this version of
+Dimetheus runs, you need to visit the following website
+and follow the instructions given there.
+   
+   https://www.gableske.net/dimetheus/license
+
+Using Dimetheus without a proper license is not allowed.
+Contact the author if problems occur.

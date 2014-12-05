@@ -1,0 +1,3 @@
+This software is based on the Dimetheus SAT solver
+by Oliver Gableske (oliver@gableske.net).
+Please visit: https://www.gableske.net/dimetheus
